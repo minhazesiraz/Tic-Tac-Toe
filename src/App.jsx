@@ -18,10 +18,10 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  //   console.log(squares);
-  const [xIsNext, setXIsNext] = useState(true);
+function Board({ xIsNext, squares, onPlay }) {
+  //   const [squares, setSquares] = useState(Array(9).fill(null));
+  //   //   console.log(squares);
+  //   const [xIsNext, setXIsNext] = useState(true);
 
   const winner = calculateWinner(squares);
   let status;
@@ -44,8 +44,9 @@ function Board() {
     } else {
       nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares);
+    //  setSquares(nextSquares);
+    //  setXIsNext(!xIsNext);
   }
   return (
     <>
@@ -91,4 +92,45 @@ function calculateWinner(squares) {
   return null;
 }
 
-export default Board;
+function Game() {
+  //   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [xIsNext, setXIsNext] = useState(true);
+
+  const currentSquares = history[history.length - 1];
+
+  function handlePlay(nextSquares) {
+    //  const newHistory = history.concat([nextSquares]);
+    //  setHistory(newHistory);
+    setXIsNext(!xIsNext);
+    setHistory([...history, nextSquares]);
+  }
+
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = `Go to move #${move}`;
+    } else {
+      description = `Go to game start`;
+    }
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="bg-gray-200 p-4">
+        <h1 className="text-2xl font-bold">Tic Tac Toe</h1>
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="bg-gray-200 p-4">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+}
+
+export default Game;
