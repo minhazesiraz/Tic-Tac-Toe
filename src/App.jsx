@@ -1,11 +1,16 @@
 import "./App.css";
 
-function App() {
+function Square() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <button className="bg-white border border-gray-400 h-12 w-12 m-1 leading-9 text-lg">
+        X
+      </button>
+      <button className="bg-white border border-gray-400 h-12 w-12 m-1 leading-9 text-lg">
+        X
+      </button>
     </>
   );
 }
 
-export default App;
+export default Square;
