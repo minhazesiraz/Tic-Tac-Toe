@@ -96,14 +96,21 @@ function Game() {
   //   const [squares, setSquares] = useState(Array(9).fill(null));
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [xIsNext, setXIsNext] = useState(true);
+  const [currentMove, setCurrentMove] = useState(0);
 
   const currentSquares = history[history.length - 1];
 
   function handlePlay(nextSquares) {
-    //  const newHistory = history.concat([nextSquares]);
-    //  setHistory(newHistory);
+    const newHistory = history.concat([nextSquares]);
+    setHistory(newHistory);
     setXIsNext(!xIsNext);
-    setHistory([...history, nextSquares]);
+    //  setHistory([...history, nextSquares]);
+  }
+
+  function jumpTo(step) {
+    setCurrentMove(step);
+    setXIsNext(step % 2 === 0);
+    setHistory(history.slice(0, step + 1));
   }
 
   const moves = history.map((squares, move) => {
